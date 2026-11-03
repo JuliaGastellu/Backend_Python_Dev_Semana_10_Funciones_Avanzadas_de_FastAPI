@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="es"><meta charset="utf-8"><title>Mis notificaciones de Pulse</title>
+<h1>Mis notificaciones</h1><label>Mi access token <input id="token" type="password"></label>
+<button id="connect">Conectar</button><pre id="events"></pre>
+<script>
+let socket;
+document.querySelector('#connect').onclick = () => {
+  if(socket) socket.close();
+  socket = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/api/v1/ws/notifications?token=' + encodeURIComponent(document.querySelector('#token').value));
+  socket.onmessage = event => document.querySelector('#events').textContent += event.data + '\n';
+  socket.onclose = () => document.querySelector('#events').textContent += 'Conexión cerrada\n';
+};
+</script></html>
